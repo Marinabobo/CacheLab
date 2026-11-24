@@ -22,6 +22,32 @@ int is_mul(int M, int N, int A[N][M], int B[M][N], int C[N][N]);
 char mul_submit_desc[] = "Multiply submission";
 void mul_submit(int M, int N, int A[N][M], int B[M][N], int C[N][N])
 {
+    int j, kk, i, k, a;
+    int c0,c1,c2,c3,c4,c5,c6,c7;
+    for (i=0; i<N; ++i)
+        for (j=0; j<N; ++j) C[i][j]=0;
+    for (j=0; j+7<N; j+=8)
+        for (kk=0; kk<M; kk+=8)
+            for (i=0; i<N; ++i) {
+                c0=C[i][j]; c1=C[i][j+1]; c2=C[i][j+2]; c3=C[i][j+3];
+                c4=C[i][j+4]; c5=C[i][j+5]; c6=C[i][j+6]; c7=C[i][j+7];
+                for (k=kk; k<M && k<kk+8; ++k) {
+                    a=A[i][k];
+                    c0+=a*B[k][j]; c1+=a*B[k][j+1];
+                    c2+=a*B[k][j+2]; c3+=a*B[k][j+3];
+                    c4+=a*B[k][j+4]; c5+=a*B[k][j+5];
+                    c6+=a*B[k][j+6]; c7+=a*B[k][j+7];
+                }
+                C[i][j]=c0; C[i][j+1]=c1; C[i][j+2]=c2; C[i][j+3]=c3;
+                C[i][j+4]=c4; C[i][j+5]=c5; C[i][j+6]=c6; C[i][j+7]=c7;
+            }
+    /* Remaining columns for arbitrary rectangular inputs. */
+    for (; j<N; ++j)
+        for (i=0; i<N; ++i) {
+            c0=0;
+            for (k=0; k<M; ++k) c0+=A[i][k]*B[k][j];
+            C[i][j]=c0;
+        }
 }
 
 /*

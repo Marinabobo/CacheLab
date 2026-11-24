@@ -1,0 +1,19 @@
+rm -f *.o *.tar
+rm -f csim test-csim test-trans tracegen test-mul tracegen-mul
+rm -f solver solver.out.*
+rm -f trace.all trace.f* trace.m* trace.tmp
+rm -f .csim_results .marker
+gcc -g -Wall -Werror -fsigned-char -o csim csim.c cachelab.c -lm
+gcc -g -Wall -Werror -fsigned-char -o test-csim test-csim.c
+gcc -g -Wall -Werror -fsigned-char -O0 -c trans.c
+gcc -g -Wall -Werror -fsigned-char -o test-trans test-trans.c perf.c cachelab.c trans.o
+gcc -g -Wall -Werror -fsigned-char -O0 -o tracegen tracegen.c trans.o cachelab.c
+gcc -g -Wall -Werror -fsigned-char -O0 -c mul.c
+gcc -g -Wall -Werror -fsigned-char -o test-mul test-mul.c perf.c cachelab.c mul.o
+gcc -g -Wall -Werror -fsigned-char -O0 -o tracegen-mul tracegen-mul.c mul.o cachelab.c
+gcc -g -Wall -Werror -fsigned-char -O2 -fno-stack-protector -c solver.c
+gcc -g -Wall -Werror -fsigned-char -O2 -fno-stack-protector -o solver solver.o libsolve.c
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+valgrind-3.26.0
+Python 3.14.4
+x86_64
